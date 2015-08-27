@@ -1,0 +1,33 @@
+<div ng-keydown="keyPressed($event)">
+<button ng-click="setOrStopTempoClick()">
+        <div ng-if="!settingTempo">
+        Start setting tempo
+         </div>
+        <div ng-if="settingTempo">
+        Stop setting tempo
+        </div>
+    </button>
+    <button ng-show="settingTempo" ng-click="markTempoClick()"><span style='text-decoration: underline'>M</span>ark tempo</button>
+<br>
+<p>{{averageBeat}}</p>
+<br>
+<label>Input your own tempo here</label>
+<input type=number ng-model="tempo"/>
+<br>
+<label>Choose a time signature</label>
+<select ng-model='timesignum'>
+  <option value="4">4</option>
+  <option value="3">3</option>
+  <option value="2">2</option>
+</select>
+
+<select ng-model='timesigdem'>
+  <option value="4">4</option>
+  <option value="8">8</option>
+</select>
+
+<br>
+<button ng-click="doneTempoPage()">Okay</button>
+    
+</div> 
+<!--<a class="btn" href="#/main">Okay</a>-->

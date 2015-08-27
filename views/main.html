@@ -1,0 +1,36 @@
+<div ng-keydown="keyPressed($event)">
+
+<p>This is the main page for stuff {{count}}</p>
+<p>tempo {{tempo}}</p>
+<p>timesig num{{timesignum}}</p>
+<p>timesig dem {{timesigdem}}</p>
+
+<button ng-click="setOrStopBeatClick()">
+    <div ng-if="!settingBeat">
+    Start inputting beats
+     </div>
+    <div ng-if="settingBeat">
+    Stop inputting beats
+    </div>
+</button>
+    
+<button ng-show="settingBeat" ng-click="markBeatClick()"><span style='text-decoration: underline'>M</span>ark beat</button>
+    
+<br>
+<br>
+
+<canvas width=700 height=100></canvas>
+
+<span style='margin:10px' ng-repeat='noteValue in noteValues track by $index'>   {{noteValue}}  </span>
+
+<ul style='list-style-type: none; list-style:initial; display:inline' ng-repeat='noteValue in noteValues track by $index'>
+    <li>
+    <!--    <figure>
+            <img ng-src="../images/{{getImageName(noteValue)}}.png" alt="{{noteValue}}" />
+            <figcaption>lyrics</figcaption>
+        </figure>-->
+        {{getImageName(noteValue)}}
+    </li>
+</ul>
+   
+</div>
