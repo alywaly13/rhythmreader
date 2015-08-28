@@ -1,6 +1,7 @@
 
-myApp.controller('mainController', ['$scope', '$log', 'scoreData', function ($scope, $log, scoreData) {
+myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpers', function ($scope, $log, scoreData, vexFlowHelpers) {
 
+    $scope.id = "canvasid";
     $scope.count = 13135;
     $scope.tempo = scoreData.tempo;
     $scope.timesigdem = scoreData.timesigdem;
@@ -11,11 +12,21 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', function ($sc
         $scope.settingBeat = !$scope.settingBeat;
         $scope.count = 0;
         if ($scope.settingBeat){
-            //We're about to start setting the tempo
+            //We're about to start inputting
             scoreData.noteLengths = [];
             scoreData.noteValues = [];
             $scope.noteValues = [];
         }
+  /*      else{
+            //We're done inputting stuff
+            for (var i=0; i<$scope.noteValues.length; i++){
+                alert(i);
+                var canvas = $("canvas")[0];
+                canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+                vexFlowHelpers.addNote(vexFlowHelpers.getDurationCode($scope.noteValues[i]));
+                vexFlowHelpers.drawCanvas($scope.timesigdem);
+            }
+        }*/
     };
     
     $scope.markBeatClick = function(){
@@ -28,6 +39,14 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', function ($sc
             $scope.currentBeatTime = $scope.currentBeatDate.getTime();
             scoreData.updateNoteValues($scope.currentBeatTime-$scope.oldBeatTime);
             $scope.noteValues = scoreData.noteValues;
+            
+        /*    var canvas = $("canvas")[0];
+            canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);*/
+            //TODO: ADD BARLINES BASED ON TIME SIGNATURE
+            
+            vexFlowHelpers.addNote(vexFlowHelpers.getDurationCode($scope.noteValues[$scope.noteValues.length-1]));
+            vexFlowHelpers.drawCanvas($scope.timesigdem);
+
             $log.debug(scoreData.noteLengths);
             $scope.oldBeatTime=$scope.currentBeatTime;
             $scope.oldBeatDate=$scope.currentBeatDate;
@@ -59,50 +78,5 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', function ($sc
                 return 'quarter'
         }
     };
-    
-    $scope.drawCanvas = function(){
-        var canvas = $("canvas")[0];
-        var renderer = new Vex.Flow.Renderer(canvas, Vex.Flow.Renderer.Backends.CANVAS);
-        var ctx = renderer.getContext();
-        var stave = new Vex.Flow.Stave(10, 0, 500);
-        stave.addClef("treble").setContext(ctx).draw();
-        alert($scope.notes.length);
-
-        // Create a voice in 4/4
-          var voice = new Vex.Flow.Voice({
-            num_beats: 4,
-            beat_value: $scope.timesigdem,
-            resolution: Vex.Flow.RESOLUTION
-          });
-
-        voice.setStrict(false)
-
-        voice.addTickables($scope.notes);
-        
-        var formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice], 400);
-
-        voice.draw(ctx, stave);
-    };
-    
-    $scope.addNote = function(durationCode){
-        $scope.notes.push(new Vex.Flow.StaveNote({ keys: ["f/4"], duration: durationCode }));
-        alert($scope.notes.length);
-    };
-    
-    $scope.addBarline = function(){
-        $scope.notes.push(new Vex.Flow.BarNote());
-    };
-    
-    $scope.notes = [];
-    $scope.addNote("q");
-    $scope.drawCanvas();
-    $scope.addNote("h");
-    $scope.drawCanvas();
-    $scope.addNote("8");
-    $scope.drawCanvas();
-    $scope.addNote("8");
-    $scope.drawCanvas();
-
-
   
 }]);
