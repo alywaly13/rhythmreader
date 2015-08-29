@@ -1,33 +1,48 @@
-<div ng-keydown="keyPressed($event)">
-<button ng-click="setOrStopTempoClick()">
-        <div ng-if="!settingTempo">
-        Start setting tempo
-         </div>
-        <div ng-if="settingTempo">
-        Stop setting tempo
-        </div>
+<div id = "tempo" ng-keydown="keyPressed($event)">
+    <h3>Instructions</h3>
+
+<p class="instructions">Set the tempo and choose a time signature. To set tempo, either enter a value into the textbox, or click "Start setting tempo", and click the button (or press the 'M' key) to mark the beat.</p>
+    
+<br>
+
+<div class="inputButtonSet">
+    <button class="btn btn-default" type="submit" ng-click="setOrStopTempoClick()">
+            <div ng-if="!settingTempo">
+            Start setting tempo
+             </div>
+            <div ng-if="settingTempo">
+            Stop setting tempo
+            </div>
     </button>
-    <button ng-show="settingTempo" ng-click="markTempoClick()"><span style='text-decoration: underline'>M</span>ark tempo</button>
-<br>
-<p>{{averageBeat}}</p>
-<br>
-<label>Input your own tempo here</label>
-<input type=number ng-model="tempo"/>
-<br>
-<label>Choose a time signature</label>
-<select ng-model='timesignum'>
-  <option value="4">4</option>
-  <option value="3">3</option>
-  <option value="2">2</option>
-</select>
 
-<select ng-model='timesigdem'>
-  <option value="4">4</option>
-  <option value="8">8</option>
-</select>
+    <button type="button" class="btn btn-default" ng-show="settingTempo" ng-click="markTempoClick()"><span style='text-decoration: underline'>M</span>ark tempo
+    </button>
+</div>
+    
+<br>
+<p>Current average time (millisecs) between beats: {{averageBeat}}</p>
+<div id="inputInfo">
+    <label>Tempo Set As: </label>
+    <input class="form-control" type=number ng-model="tempo"/>
+    <br>
+
+    <label>Choose a time signature:</label>
+    <select class="form-control" ng-model='timesignum'>
+        <option value="4">4</option>
+        <option value="3">3</option>
+        <option value="2">2</option>
+    </select>
+
+    <select class="form-control" ng-model='timesigdem'>
+        <option value="4">4</option>
+        <option value="8">8</option>
+    </select>
+</div>
 
 <br>
-<button ng-click="doneTempoPage()">Okay</button>
+<br>
+<br>
+<button id="okayButton" type="button" class="btn btn-default" ng-click="doneTempoPage()">Okay</button>
     
 </div> 
 <!--<a class="btn" href="#/main">Okay</a>-->

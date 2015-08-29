@@ -1,4 +1,64 @@
+/*color palette: 
+808d8e, 766c7f, 947eb0, a3a5c3, a9d2d5*/
 body {
-    background-color: #39d3a9;
-    padding: 2%;
+    background-color: #a3a5c3;
+    color: #766c7f;
+    padding: 5%;
+    font-family: 'Open Sans', "Palatino Linotype", "Book Antiqua", Palatino, sans-serif;
+}
+
+p{
+    font-size: 125%;
+}
+
+label{
+    font-size: 125%;
+    color: #766c7f;
+}
+
+#tempoinstructions{
+    font-size:200%;
+}
+
+#tempo, #main{
+    padding-top:5%;
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-bottom:5%;
+    background-color: #c6c7de;
+    position:relative;
+
+}
+
+#tempo select{
+    width: 10% ;
+    font-size:110%;
+    margin:auto;
+}
+
+#tempo input{
+    width:15%;
+    font-size:110%;
+    margin:auto;
+}
+
+#inputInfo{
+    text-align: center;
+}
+
+.instructions{
+    font-size:100%;
+}
+
+#okayButton{
+    position:absolute;
+    right:15%;
+}
+
+.inputButtonSet{
+    text-align: center;
+}
+
+canvas{
+    margin-left: -15%;
 }

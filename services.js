@@ -4,6 +4,7 @@ myApp.service('scoreData', function(){
     //this.tempo
     //this.noteValues;
     //this.noteLengths;
+    
     this.updateNoteValues = function(newLength){
         //right now, not necessary to track noteLengths, but aw heck why not?
         this.noteLengths.push(newLength);
@@ -11,30 +12,44 @@ myApp.service('scoreData', function(){
         var possibleNoteValues = [.5, 1, 1.5, 2, 3, 4];
         //this is because we want newLengh/beatLength, where beatLength is time in millisecs of one quarter note 
         var frac = newLength*this.tempo/60000; 
+        //Below two are for note values that will be longer that 4 and require a tie
+        var fours = Math.floor(frac /4);
+        frac = frac %4;
         var minDiff = 100; 
         var minDiffArg = 0.25;
+        
         for (var j=0; j<possibleNoteValues.length; j++){
           if (Math.abs(possibleNoteValues[j]-frac) < minDiff){
             minDiff = Math.abs(possibleNoteValues[j]-frac);
             minDiffArg = possibleNoteValues[j];
           }
         }
-        this.noteValues.push(minDiffArg);
+            
+        //wait, but if frac is too close to zero, just set it to zero and forget what we just calculated.
+        if (frac<0.35){
+            minDiffArg = 0;
+        }
+        console.log("length" + newLength);
+        console.log("value" + minDiffArg + fours*4);
+        this.noteValues.push(minDiffArg + fours*4);
     };
+    
+    this.reset = function(){
+        this.noteValues=[];
+        this.noteLengths=[];
+    }
     
 });
 
 myApp.service('vexFlowHelpers', function(){
     
     this.notes = [];
-    
+    this.ties = [];
+
     this.drawCanvas = function(timesigdem){
-        var canvas = $("#canvasid")[0];
+        var canvas = $("canvas")[0];
         var maxwidth = $(window).width();
-        alert("canvas width" +canvas.width);
-        alert("window width" + maxwidth);
         if (canvas.width + 50 < maxwidth){
-            alert(canvas.width);
             canvas.width = canvas.width + 40;
         }
         else{
@@ -59,31 +74,61 @@ myApp.service('vexFlowHelpers', function(){
         var formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice],  Math.round(canvas.width * 0.94));
 
         voice.draw(ctx, stave);
+        
+        for (var i=0; i<this.ties.length; i++){
+            this.ties[i].setContext(ctx).draw();
+        }
     };
     
-    this.addNote = function(durationCode){
-        this.notes.push(new Vex.Flow.StaveNote({ keys: ["f/4"], duration: durationCode }));
+    this.addNote = function(noteValue){
+        var frac = noteValue %4;
+        var fours = Math.floor(noteValue/4);
+        if (fours ==0){
+            this.notes.push(this.getVexNote(frac));
+        }
+        else{
+            var tiednotes = [];
+            for (var i=0; i<fours; i++){
+                tiednotes.push(this.getVexNote(4));
+            }
+            if (frac !=0){
+                tiednotes.push(this.getVexNote(frac));
+            }
+            var tie = new Vex.Flow.StaveTie({
+                first_note: tiednotes[0],
+                last_note: tiednotes[tiednotes.length - 1],
+                first_indices: [0],
+                last_indices: [0]
+                });
+            this.notes = this.notes.concat(tiednotes);
+            this.ties.push(tie);
+        }
     };
     
     this.addBarline = function(){
         this.notes.push(new Vex.Flow.BarNote());
     };
     
-    this.getDurationCode = function(noteValue){
+    this.getVexNote = function(noteValue){
         switch(noteValue) {
             case 0.5:
-                return "8";
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: "8"});
             case 1.5:
-                return 'dq';
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: 'q'}).addDotToAll();
             case 2:
-                return 'h';
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: 'h' });
             case 3:
-                return 'dh';
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: 'h'}).addDotToAll();
             case 4:
-                return 'w';
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: 'w'});
             default:
-                return 'q'
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: 'q'});
         }
+    };
+    
+    this.reset = function(){
+        this.notes = [];
+        this.ties = [];
     };
     
 });

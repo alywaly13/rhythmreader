@@ -4,7 +4,7 @@ myApp.controller('tempoController', ['$scope', '$log', '$location', 'scoreData',
     
     $scope.tempo = 100;
     $scope.timesigdem = "4";
-    $scope.timesignum = "3";
+    $scope.timesignum = "4";
     
     $scope.setOrStopTempoClick = function(){
         $log.debug($scope.tempo);
@@ -34,6 +34,7 @@ myApp.controller('tempoController', ['$scope', '$log', '$location', 'scoreData',
             $scope.oldBeatTime=$scope.currentBeatTime;
             $scope.oldBeatDate=$scope.currentBeatDate;
         }
+        
         $scope.count++;
         $log.debug($scope.tempo);
         $log.debug($scope.tempo);

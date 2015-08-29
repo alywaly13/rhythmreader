@@ -6,7 +6,6 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
     $scope.tempo = scoreData.tempo;
     $scope.timesigdem = scoreData.timesigdem;
     $scope.timesignum = scoreData.timesignum;
- 
     
      $scope.setOrStopBeatClick = function(){
         $scope.settingBeat = !$scope.settingBeat;
@@ -23,7 +22,7 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
                 alert(i);
                 var canvas = $("canvas")[0];
                 canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-                vexFlowHelpers.addNote(vexFlowHelpers.getDurationCode($scope.noteValues[i]));
+            //    vexFlowHelpers.addNote(vexFlowHelpers.getDurationCode($scope.noteValues[i]));
                 vexFlowHelpers.drawCanvas($scope.timesigdem);
             }
         }*/
@@ -44,7 +43,8 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
             canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);*/
             //TODO: ADD BARLINES BASED ON TIME SIGNATURE
             
-            vexFlowHelpers.addNote(vexFlowHelpers.getDurationCode($scope.noteValues[$scope.noteValues.length-1]));
+            //Todo: don't do it by getting the last added thing
+            vexFlowHelpers.addNote($scope.noteValues[$scope.noteValues.length-1]);
             vexFlowHelpers.drawCanvas($scope.timesigdem);
 
             $log.debug(scoreData.noteLengths);
@@ -55,8 +55,14 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
 
     };
     
+    $scope.resetNotes = function(){
+        $scope.noteValues=[];
+        scoreData.reset();
+        vexFlowHelpers.reset();
+        $("canvas")[0].width = 300;
+    };
+    
     $scope.keyPressed = function(e){
-        $scope.renderNotes();
         if (e.which==77 && $scope.settingBeat){
             $scope.markBeatClick();
         }
@@ -66,6 +72,8 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
         switch(noteValue) {
             case 0.5:
                 return 'eighth';
+            case 1:
+                return 'quarter';
             case 1.5:
                 return 'dottedquarter';
             case 2:
@@ -75,8 +83,8 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
             case 4:
                 return 'whole';
             default:
-                return 'quarter'
+                return 'longer than whole'
         }
     };
-  
+      
 }]);
