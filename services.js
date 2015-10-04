@@ -43,17 +43,23 @@ myApp.service('scoreData', function(){
 
 myApp.service('vexFlowHelpers', function(){
     
-    this.notes = [];
+    this.canvasNumber = 0;
+    this.notes = [[]];
     this.ties = [];
+    var canvas = $("canvas")[0];
+
 
     this.drawCanvas = function(timesigdem){
-        var canvas = $("canvas")[0];
-        var maxwidth = $(window).width();
-        if (canvas.width + 50 < maxwidth){
+     //   var maxwidth = $(window).width();
+        var maxwidth = $("canvas").parent().parent().width()*0.9;
+        console.log("canvas width " + canvas.width);
+        console.log("window max width " + maxwidth);
+        if (canvas.width +40 < maxwidth){
             canvas.width = canvas.width + 40;
         }
         else{
-            canvas.width = canvas.width ;
+            canvas.width = maxwidth;
+            this.notes.push([]);
         }
         var renderer = new Vex.Flow.Renderer(canvas, Vex.Flow.Renderer.Backends.CANVAS);
         var ctx = renderer.getContext();
@@ -68,13 +74,12 @@ myApp.service('vexFlowHelpers', function(){
           });
 
         voice.setStrict(false)
-
-        voice.addTickables(this.notes);
-        
+        console.log(this.notes);
+        voice.addTickables(this.notes[this.notes.length-1]);
         var formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice],  Math.round(canvas.width * 0.94));
 
         voice.draw(ctx, stave);
-        
+
         for (var i=0; i<this.ties.length; i++){
             this.ties[i].setContext(ctx).draw();
         }
@@ -84,7 +89,7 @@ myApp.service('vexFlowHelpers', function(){
         var frac = noteValue %4;
         var fours = Math.floor(noteValue/4);
         if (fours ==0){
-            this.notes.push(this.getVexNote(frac));
+            this.notes[this.notes.length-1].push(this.getVexNote(frac));
         }
         else{
             var tiednotes = [];
@@ -100,13 +105,13 @@ myApp.service('vexFlowHelpers', function(){
                 first_indices: [0],
                 last_indices: [0]
                 });
-            this.notes = this.notes.concat(tiednotes);
+            this.notes[this.notes.length-1] = this.notes[this.notes.length-1].concat(tiednotes);
             this.ties.push(tie);
         }
     };
     
     this.addBarline = function(){
-        this.notes.push(new Vex.Flow.BarNote());
+        this.notes[this.notes.length-1].push(new Vex.Flow.BarNote());
     };
     
     this.getVexNote = function(noteValue){
@@ -127,7 +132,7 @@ myApp.service('vexFlowHelpers', function(){
     };
     
     this.reset = function(){
-        this.notes = [];
+        this.notes[this.notes.length-1] = [];
         this.ties = [];
     };
     
