@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "description": "To help with transcribing rhythm",
     "devDependencies": {
-    "express": "^4.13.3"
+    "express": "^4.13.3",
+    "vexflow": "*"
   },
 
  
