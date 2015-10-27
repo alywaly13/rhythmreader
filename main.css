@@ -20,6 +20,10 @@ label{
     font-size:200%;
 }
 
+.outline{
+    border:1px solid #000000;
+}
+
 #tempo, #main{
     padding-top:5%;
     padding-left: 15%;

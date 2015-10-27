@@ -1,8 +1,8 @@
 
-myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpers', function ($scope, $log, scoreData, vexFlowHelpers) {
+myApp.controller('mainController', ['$scope', '$log', '$location', 'scoreData', 'vexFlowHelpers', function ($scope, $log, $location, scoreData, vexFlowHelpers) {
 
     $scope.id = "canvasid";
-    $scope.count = 13135;
+    $scope.count;
     $scope.tempo = scoreData.tempo;
     $scope.timesigdem = scoreData.timesigdem;
     $scope.timesignum = scoreData.timesignum;
@@ -59,7 +59,13 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
         $scope.noteValues=[];
         scoreData.reset();
         vexFlowHelpers.reset();
-        $("canvas")[0].width = 300;
+        $("#canvases").remove();
+        $("#main").append("<div id=\"canvases\"><canvas width=200 height=100></canvas></div>");
+        console.log($("#canvases"));
+        console.log($("canvas").length);
+        console.log($("canvas")[0]);
+        console.log($("canvas")[4]);
+        
     };
     
     $scope.keyPressed = function(e){
@@ -86,5 +92,5 @@ myApp.controller('mainController', ['$scope', '$log', 'scoreData', 'vexFlowHelpe
                 return 'longer than whole'
         }
     };
-      
+    
 }]);

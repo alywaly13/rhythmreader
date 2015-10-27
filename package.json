@@ -1,0 +1,15 @@
+{
+  "name": "rhythmReader",
+  "private": true,
+  "version": "0.0.0",
+  "description": "To help with transcribing rhythm",
+    "devDependencies": {
+    "express": "^4.13.3"
+  },
+
+ 
+  "scripts": {
+      "prestart": "npm install",
+    "start": "http-server -a localhost -p 8000 -c-1"
+  }
+}

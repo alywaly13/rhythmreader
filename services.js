@@ -47,11 +47,11 @@ myApp.service('vexFlowHelpers', function(){
     this.notes = [[]];
     this.ties = [];
     var canvas = $("canvas")[0];
-
+    var startNewCanvas=false;
 
     this.drawCanvas = function(timesigdem){
      //   var maxwidth = $(window).width();
-        var maxwidth = $("canvas").parent().parent().width()*0.9;
+        var maxwidth = $("canvas").parent().parent().parent().width()*0.9;
         console.log("canvas width " + canvas.width);
         console.log("window max width " + maxwidth);
         if (canvas.width +40 < maxwidth){
@@ -59,7 +59,7 @@ myApp.service('vexFlowHelpers', function(){
         }
         else{
             canvas.width = maxwidth;
-            this.notes.push([]);
+            startNewCanvas = true;
         }
         var renderer = new Vex.Flow.Renderer(canvas, Vex.Flow.Renderer.Backends.CANVAS);
         var ctx = renderer.getContext();
@@ -85,7 +85,22 @@ myApp.service('vexFlowHelpers', function(){
         }
     };
     
+    var drawNewCanvas = function(){
+        var newcanvas = $("<canvas>");
+    //    newcanvas.addClass("outline");
+        $("#canvases").append(newcanvas);
+        canvas = $("canvas")[$("canvas").length-1];
+        canvas.width = 300;
+        canvas.height = 100;
+    }
+    
     this.addNote = function(noteValue){
+        if (startNewCanvas){
+            console.log("start new canvas");
+            this.notes.push([]);
+            drawNewCanvas();
+            startNewCanvas = false;
+        }
         var frac = noteValue %4;
         var fours = Math.floor(noteValue/4);
         if (fours ==0){
@@ -132,7 +147,7 @@ myApp.service('vexFlowHelpers', function(){
     };
     
     this.reset = function(){
-        this.notes[this.notes.length-1] = [];
+        this.notes = [[]];
         this.ties = [];
     };
     
