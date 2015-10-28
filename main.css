@@ -24,14 +24,30 @@ label{
     border:1px solid #000000;
 }
 
-#tempo, #main{
-    padding-top:5%;
+#tempo, #main, #about{
+    padding-top:2%;
     padding-left: 15%;
     padding-right: 15%;
     padding-bottom:5%;
     background-color: #c6c7de;
     position:relative;
 
+}
+
+#main{
+    padding-top: 5%;
+}
+
+#about p{
+    font-size: 115%;
+}
+
+p a{
+    margin-left: 2%;
+}
+
+#footer {
+    color: #372945;
 }
 
 #tempo select{
@@ -65,4 +81,6 @@ label{
 
 canvas{
     margin-left: -15%;
+    color: white;
+    background-color: wheat;
 }

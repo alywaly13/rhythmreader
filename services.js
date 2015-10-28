@@ -34,7 +34,7 @@ myApp.service('scoreData', function(){
         this.noteValues.push(minDiffArg + fours*4);
     };
     
-    this.reset = function(){
+    this.resetNotes = function(){
         this.noteValues=[];
         this.noteLengths=[];
     }
@@ -42,28 +42,25 @@ myApp.service('scoreData', function(){
 });
 
 myApp.service('vexFlowHelpers', function(){
-    
-    this.canvasNumber = 0;
     this.notes = [[]];
-    this.ties = [];
-    var canvas = $("canvas")[0];
+    this.ties = [[]];
+    this.canvas = $("canvas")[0];
     var startNewCanvas=false;
 
     this.drawCanvas = function(timesigdem){
-     //   var maxwidth = $(window).width();
         var maxwidth = $("canvas").parent().parent().parent().width()*0.9;
-        console.log("canvas width " + canvas.width);
-        console.log("window max width " + maxwidth);
-        if (canvas.width +40 < maxwidth){
-            canvas.width = canvas.width + 40;
+        console.log("canvas width " + this.canvas.width);
+    //    console.log("window max width " + maxwidth);
+        if (this.canvas.width +50 < maxwidth){
+            this.canvas.width = this.canvas.width + 50;
         }
         else{
-            canvas.width = maxwidth;
+            this.canvas.width = maxwidth;
             startNewCanvas = true;
         }
-        var renderer = new Vex.Flow.Renderer(canvas, Vex.Flow.Renderer.Backends.CANVAS);
+        var renderer = new Vex.Flow.Renderer(this.canvas, Vex.Flow.Renderer.Backends.CANVAS);
         var ctx = renderer.getContext();
-        var stave = new Vex.Flow.Stave(10, 0, Math.round(canvas.width * 0.95));
+        var stave = new Vex.Flow.Stave(10, 0, Math.round(this.canvas.width * 0.95));
         stave.addClef("treble").setContext(ctx).draw();
 
         // Create a voice in 4/4
@@ -74,31 +71,29 @@ myApp.service('vexFlowHelpers', function(){
           });
 
         voice.setStrict(false)
-        console.log(this.notes);
         voice.addTickables(this.notes[this.notes.length-1]);
-        var formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice],  Math.round(canvas.width * 0.94));
+        var formatter = new Vex.Flow.Formatter().joinVoices([voice]).format([voice],  Math.round(this.canvas.width * 0.94));
 
         voice.draw(ctx, stave);
 
-        for (var i=0; i<this.ties.length; i++){
-            this.ties[i].setContext(ctx).draw();
+        for (var i=0; i<this.ties[this.ties.length-1].length; i++){
+            this.ties[this.ties.length-1][i].setContext(ctx).draw();
         }
     };
     
-    var drawNewCanvas = function(){
-        var newcanvas = $("<canvas>");
+    this.drawNewCanvas = function(){
     //    newcanvas.addClass("outline");
-        $("#canvases").append(newcanvas);
-        canvas = $("canvas")[$("canvas").length-1];
-        canvas.width = 300;
-        canvas.height = 100;
+        $("#canvases").append("<canvas>");
+        this.canvas = $("canvas")[$("canvas").length-1];
+        this.canvas.width = 300;
+        this.canvas.height = 100;
     }
     
     this.addNote = function(noteValue){
         if (startNewCanvas){
-            console.log("start new canvas");
             this.notes.push([]);
-            drawNewCanvas();
+            this.ties.push([]);
+            this.drawNewCanvas();
             startNewCanvas = false;
         }
         var frac = noteValue %4;
@@ -121,8 +116,9 @@ myApp.service('vexFlowHelpers', function(){
                 last_indices: [0]
                 });
             this.notes[this.notes.length-1] = this.notes[this.notes.length-1].concat(tiednotes);
-            this.ties.push(tie);
+            this.ties[this.ties.length-1].push(tie);
         }
+        console.log(this.notes);
     };
     
     this.addBarline = function(){
@@ -148,7 +144,12 @@ myApp.service('vexFlowHelpers', function(){
     
     this.reset = function(){
         this.notes = [[]];
-        this.ties = [];
+        this.ties = [[]];
+        $("#canvases").remove();
+        $("#main").append("<div id=\"canvases\"><canvas width=250 height=100></canvas></div>");
+        this.canvas = $("canvas")[0];
+
+        var startNewCanvas=false;
     };
     
 });

@@ -6,6 +6,9 @@ myApp.config(
             .when('/', 
                    {templateUrl:'views/tempo.html', 
                    controller: 'tempoController'})
+            .when('/about', 
+                 {templateUrl:'views/about.html', 
+                  controller: 'aboutController'})
             .when('/main', 
                  {templateUrl:'views/main.html', 
                  controller:'mainController'});
