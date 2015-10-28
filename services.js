@@ -9,7 +9,7 @@ myApp.service('scoreData', function(){
         //right now, not necessary to track noteLengths, but aw heck why not?
         this.noteLengths.push(newLength);
 
-        var possibleNoteValues = [.5, 1, 1.5, 2, 3, 4];
+        var possibleNoteValues = [0.25, .5, 1, 1.5, 2, 3, 4];
         //this is because we want newLengh/beatLength, where beatLength is time in millisecs of one quarter note 
         var frac = newLength*this.tempo/60000; 
         //Below two are for note values that will be longer that 4 and require a tie
@@ -129,6 +129,10 @@ myApp.service('vexFlowHelpers', function(){
     
     this.getVexNote = function(noteValue){
         switch(noteValue) {
+            case 0:
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: "16"});
+            case 0.25:
+                return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: "16"});
             case 0.5:
                 return new Vex.Flow.StaveNote({ keys: ["f/4"], duration: "8"});
             case 1.5:

@@ -56,6 +56,7 @@ myApp.controller('mainController', ['$scope', '$log', '$window', 'scoreData', 'v
     };
     
     $scope.resetNotes = function(){
+        console.log("reset notes");
         $scope.noteValues=[];
         scoreData.resetNotes();
         vexFlowHelpers.reset();
@@ -67,6 +68,7 @@ myApp.controller('mainController', ['$scope', '$log', '$window', 'scoreData', 'v
         console.log($("canvas")[0]);
         console.log($("canvas")[4]);*/
     };
+
     
     $scope.keyPressed = function(e){
         if (e.which==77 && $scope.settingBeat){
