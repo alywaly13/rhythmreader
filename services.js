@@ -56,6 +56,7 @@ myApp.service('vexFlowHelpers', function(){
         }
         else{
             this.canvas.width = maxwidth;
+            console.log("start new canvas" + startNewCanvas);
             startNewCanvas = true;
         }
         var renderer = new Vex.Flow.Renderer(this.canvas, Vex.Flow.Renderer.Backends.CANVAS);
@@ -90,6 +91,7 @@ myApp.service('vexFlowHelpers', function(){
     }
     
     this.addNote = function(noteValue){
+        console.log("startnewcanvas" + startNewCanvas);
         if (startNewCanvas){
             this.notes.push([]);
             this.ties.push([]);
@@ -148,8 +150,8 @@ myApp.service('vexFlowHelpers', function(){
         $("#canvases").remove();
         $("#main").append("<div id=\"canvases\"><canvas width=250 height=100></canvas></div>");
         this.canvas = $("canvas")[0];
-
-        var startNewCanvas=false;
+        console.log(startNewCanvas);
+        startNewCanvas=false;
     };
     
 });

@@ -1,6 +1,6 @@
 <div id="main" ng-keydown="keyPressed($event)">
-<a class="btn btn-default" href="/">Reset All</a>
-<button class="btn btn-default" ng-click="resetNotes()">Reset Notes</button>
+<a class="btn btn-default" ng-show="!settingBeat" href="http://rhythm-transcriber.herokuapp.com">Reset All</a>
+<button class="btn btn-default" ng-show="!settingBeat" ng-click="resetNotes()">Reset Notes</button>
 <br>
 <br>   
 <p class="instructions">Push the "Start inputting beats" button when ready. At each beat, push the Mark Beat button, or alternatively press the M key on the

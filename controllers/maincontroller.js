@@ -1,5 +1,5 @@
 
-myApp.controller('mainController', ['$scope', '$log', '$route', 'scoreData', 'vexFlowHelpers', function ($scope, $log, $route, scoreData, vexFlowHelpers) {
+myApp.controller('mainController', ['$scope', '$log', '$window', 'scoreData', 'vexFlowHelpers', function ($scope, $log, $window, scoreData, vexFlowHelpers) {
 
     $log.debug("controller loaded");
     $scope.count;
